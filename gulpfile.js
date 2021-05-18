@@ -105,7 +105,7 @@ const start = series(setProductionMode, compile, serve)
 function serve(done){
     const open = process.argv.includes('--open');
     const portConfig = process.argv.includes('--port')
-    const port = portConfig&&process.argv[process.argv.findIndex(item=>{
+    const port = (portConfig>=0)&&process.argv[process.argv.findIndex(item=>{
         return item =='--port'
     })+1];
     watch('src/assets/scripts/*.js',compileJs);
@@ -131,8 +131,10 @@ function deploy(done) {
     let branchCmd = process.argv.findIndex(item=>{
         return item =='--branch'
     })
-    let branch = branchCmd&&process.argv[branchCmd+1];
+    console.log(branchCmd)
+    let branch = (branchCmd>=0)&&process.argv[branchCmd+1];
     let finalBranch = branch||'master';
+    console.log(finalBranch)
     let rl = readline.createInterface({
         input:process.stdin,
         output:process.stdout
