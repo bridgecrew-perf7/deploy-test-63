@@ -128,10 +128,11 @@ function serve(done){
 
 
 function deploy(done) {
-    const branchCmd = process.argv[process.argv.findIndex(item=>{
+    let branchCmd = process.argv.findIndex(item=>{
         return item =='--branch'
-    })+1];
-    let branch = branchCmd||'master'
+    })
+    let branch = branchCmd&&process.argv[branchCmd+1];
+    let finalBranch = branch||'master'
     exec(`git add .`);
     let rl = readline.createInterface({
         input:process.stdin,
@@ -139,7 +140,7 @@ function deploy(done) {
     })
     rl.question("commit message >", answer=>{
         exec(`git commit -m ${answer}`);
-        exec(`git push origin ${branch}`);
+        exec(`git push origin ${finalBranch}`);
         done()
         rl.close()
     })
