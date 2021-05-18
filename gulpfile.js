@@ -132,18 +132,21 @@ function deploy(done) {
         return item =='--branch'
     })
     let branch = branchCmd&&process.argv[branchCmd+1];
-    let finalBranch = branch||'master'
-    exec(`git add .`);
+    let finalBranch = branch||'master';
     let rl = readline.createInterface({
         input:process.stdin,
         output:process.stdout
     })
-    rl.question("commit message >", answer=>{
-        exec(`git commit -m ${answer}`);
-        exec(`git push origin ${finalBranch}`);
-        done()
-        rl.close()
-    })
+    exec(`git add .`,()=>{
+        rl.question("commit message >", answer=>{
+            exec(`git commit -m ${answer}`,()=>{
+                exec(`git push origin ${finalBranch}`,()=>{
+                    done()
+                    rl.close()
+                });
+            });
+        })
+    });
 }
 
 module.exports = {
