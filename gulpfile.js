@@ -132,15 +132,14 @@ function deploy(done) {
         return item =='--branch'
     })+1];
     let branch = branchCmd||'master'
-    let dir = process.cwd()+'docs'
-    exec(`git add ${dir}`);
+    exec(`git add .`);
     let rl = readline.createInterface({
         input:process.stdin,
         output:process.stdout
     })
     rl.question("commit message >", answer=>{
-        exec(`git commit${answer}`);
-        exec(`git push ${branch}`);
+        exec(`git commit -m ${answer}`);
+        exec(`git push origin ${branch}`);
         done()
         rl.close()
     })
