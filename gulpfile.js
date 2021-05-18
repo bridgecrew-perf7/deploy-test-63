@@ -141,6 +141,7 @@ function deploy(done) {
         rl.question("commit message >", answer=>{
             exec(`git commit -m ${answer}`,()=>{
                 exec(`git push origin ${finalBranch}`,()=>{
+                    console.log(finalBranch)
                     done()
                     rl.close()
                 });
